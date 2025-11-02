@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import api from '../api';
 import SweetCard from '../components/SweetCard';
 import AdminPanel from '../components/AdminPanel';
+import { SWEET_CATEGORIES } from '../constants/categories';
 
 interface Sweet {
   id: number;
@@ -100,8 +101,6 @@ export default function Dashboard() {
     }
   };
 
-  const categories = Array.from(new Set(sweets.map((s) => s.category)));
-
   return (
     <div style={styles.container}>
       <header style={styles.header}>
@@ -131,7 +130,7 @@ export default function Dashboard() {
             style={styles.select}
           >
             <option value="">All Categories</option>
-            {categories.map((cat) => (
+            {SWEET_CATEGORIES.map((cat) => (
               <option key={cat} value={cat}>
                 {cat}
               </option>

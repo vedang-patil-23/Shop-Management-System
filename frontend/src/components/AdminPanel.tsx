@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../api';
+import { SWEET_CATEGORIES } from '../constants/categories';
 
 interface Props {
   onSweetUpdate: () => void;
@@ -85,18 +86,14 @@ export default function AdminPanel({
     <div style={styles.panel}>
       <div style={styles.header}>
         <h2 style={styles.title}>Admin Panel</h2>
-        <button
-          onClick={() => {
-            setShowForm(!showForm);
-            if (showForm) {
-              setEditingSweet(null);
-              setFormData({ name: '', category: '', price: '', quantity: '' });
-            }
-          }}
-          style={styles.toggleBtn}
-        >
-          {showForm ? 'Cancel' : 'Add New Sweet'}
-        </button>
+        {!showForm && (
+          <button
+            onClick={() => setShowForm(true)}
+            style={styles.toggleBtn}
+          >
+            Add New Sweet
+          </button>
+        )}
       </div>
 
       {showForm && (
@@ -109,14 +106,19 @@ export default function AdminPanel({
             style={styles.input}
             required
           />
-          <input
-            type="text"
-            placeholder="Category"
+          <select
             value={formData.category}
             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
             style={styles.input}
             required
-          />
+          >
+            <option value="">Select Category</option>
+            {SWEET_CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
           <input
             type="number"
             step="0.01"
@@ -134,9 +136,22 @@ export default function AdminPanel({
             style={styles.input}
             required
           />
-          <button type="submit" style={styles.submitBtn}>
-            {editingSweet ? 'Update' : 'Create'}
-          </button>
+          <div style={styles.buttonGroup}>
+            <button
+              type="button"
+              onClick={() => {
+                setShowForm(false);
+                setEditingSweet(null);
+                setFormData({ name: '', category: '', price: '', quantity: '' });
+              }}
+              style={styles.cancelBtn}
+            >
+              Cancel
+            </button>
+            <button type="submit" style={styles.submitBtn}>
+              {editingSweet ? 'Update' : 'Create'}
+            </button>
+          </div>
         </form>
       )}
     </div>
@@ -172,7 +187,7 @@ const styles: any = {
   },
   form: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gridTemplateColumns: 'repeat(4, 1fr)',
     gap: '15px',
     alignItems: 'end',
   },
@@ -181,6 +196,21 @@ const styles: any = {
     border: '1px solid #ddd',
     borderRadius: '5px',
     fontSize: '14px',
+  },
+  buttonGroup: {
+    display: 'flex',
+    gap: '10px',
+    gridColumn: 'span 4',
+    justifyContent: 'flex-end',
+  },
+  cancelBtn: {
+    padding: '10px 20px',
+    background: '#6c757d',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontWeight: 'bold',
   },
   submitBtn: {
     padding: '10px 20px',
