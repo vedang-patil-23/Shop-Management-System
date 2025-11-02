@@ -23,7 +23,7 @@ export default function SweetCard({ sweet, onPurchase, isAdmin, onEdit, onDelete
         <span style={styles.category}>{sweet.category}</span>
       </div>
       <div style={styles.body}>
-        <div style={styles.price}>${sweet.price.toFixed(2)}</div>
+        <div style={styles.price}>₹{sweet.price.toFixed(2)}</div>
         <div style={styles.quantity}>
           Stock: {sweet.quantity}
         </div>
