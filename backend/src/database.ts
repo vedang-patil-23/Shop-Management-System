@@ -1,7 +1,9 @@
 import sqlite3 from 'sqlite3';
 import { promisify } from 'util';
+import path from 'path';
 
-const db = new sqlite3.Database(__dirname + '/../../sweets.db');
+const dbPath = path.join(__dirname, '../../sweets.db');
+const db = new sqlite3.Database(dbPath);
 
 const dbRun = promisify(db.run.bind(db));
 const dbGet = promisify(db.get.bind(db));

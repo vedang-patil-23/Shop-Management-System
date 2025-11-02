@@ -12,24 +12,29 @@ router.post('/', authenticate, requireAdmin, async (req: AuthRequest, res: Respo
       return res.status(400).json({ error: 'All fields required' });
     }
 
-    const result = await dbRun(
+    const result: any = await dbRun(
       'INSERT INTO sweets (name, category, price, quantity) VALUES (?, ?, ?, ?)',
       [name, category, parseFloat(price), parseInt(quantity)]
     );
 
-    const sweet = await dbGet('SELECT * FROM sweets WHERE id = ?', [(result as any).lastID]);
+    const sweet = await dbGet('SELECT * FROM sweets WHERE id = ?', [result.lastID || result.changes]);
+    if (!sweet) {
+      return res.status(500).json({ error: 'Failed to retrieve created sweet' });
+    }
     res.status(201).json(sweet);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to create sweet' });
+  } catch (error: any) {
+    console.error('Error creating sweet:', error);
+    res.status(500).json({ error: error.message || 'Failed to create sweet' });
   }
 });
 
 router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
   try {
     const sweets = await dbAll('SELECT * FROM sweets ORDER BY name');
-    res.json(sweets);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch sweets' });
+    res.json(sweets || []);
+  } catch (error: any) {
+    console.error('Error fetching sweets:', error);
+    res.status(500).json({ error: error.message || 'Failed to fetch sweets' });
   }
 });
 
