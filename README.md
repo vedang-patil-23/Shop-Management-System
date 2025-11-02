@@ -192,5 +192,5 @@ The AI was used as a powerful pair-programming tool, but the final implementatio
 
 ## License
 
-This project is part of an assignment/project submission.
+This project is part of a project submission.
 
