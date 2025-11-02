@@ -5,9 +5,20 @@ import path from 'path';
 const dbPath = path.join(__dirname, '../../sweets.db');
 const db = new sqlite3.Database(dbPath);
 
-const dbRun = promisify(db.run.bind(db));
 const dbGet = promisify(db.get.bind(db));
 const dbAll = promisify(db.all.bind(db));
+
+const dbRun = (sql: string, params?: any[]): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params || [], function(err: Error | null) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ lastID: this.lastID, changes: this.changes });
+      }
+    });
+  });
+};
 
 export const initDb = async () => {
   await dbRun(`
