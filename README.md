@@ -17,6 +17,12 @@ The Sweet Shop Management System is built using Node.js/Express with TypeScript 
 - **Admin Features**: Admin can add, edit, delete, and restock sweets
 - **Responsive Design**: Modern, responsive UI with gradient styling
 
+## Screenshots
+
+![Sweet Shop Management System](./Image.png)
+
+*Dashboard view showing the admin panel, sweets inventory, and search/filter functionality*
+
 ## Tech Stack
 
 ### Backend
